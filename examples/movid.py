@@ -132,7 +132,7 @@ parser.add_argument("--max_camera_movement", type=float, default=4.0)
 
 # Configuration for the source of the assets
 parser.add_argument("--kubasic_assets_dir", type=str, default="examples/KuBasic")
-parser.add_argument("--gso_assets_dir", type=str, default="examples/GSO")
+parser.add_argument("--gso_assets_dir", type=str, default="Assets/GSO")
 parser.add_argument("--hdri_dir", type=str, default="gs://kubric-public/hdri_haven/4k")
 
 parser.add_argument("--no_save_state", dest="save_state", action="store_false")
@@ -262,13 +262,14 @@ def add_random_object(spawn_region, rng, use_init_velocity=True):
     obj.scale = scale / max_dim
 
     cat_name = "jft_category" if "jft_category" in asset_source.db.columns else "category_id"
-    category_id = int(asset_source.db[
-                      asset_source.db["id"] == asset_id].iloc[0][cat_name])
-    categories = sorted(pd.unique(asset_source.db[cat_name]))
+    category_id = 0
+    #category_id = int(asset_source.db[
+    #                  asset_source.db["id"] == asset_id].iloc[0][cat_name])
+    #categories = sorted(pd.unique(asset_source.db[cat_name]))
     obj.metadata = {
         "scale": scale,
         "asset_id": obj.asset_id,
-        "category": categories.index(category_id),
+        "category": 0,#categories.index(category_id),
     }
 
   if FLAGS.object_friction is not None:

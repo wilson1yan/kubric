@@ -203,7 +203,7 @@ def convert_all_gso_assets_from_dir(download_dir: Path, target_dir: Path):
   details_list = []
   list_of_asset_files = sorted(download_dir.glob("*.zip"))
   for i, path in enumerate(list_of_asset_files):
-    logging.info(f"{i:4d}/{len(list_of_asset_files)}: Converting {path}...")
+    print(f"{i:4d}/{len(list_of_asset_files)}: Converting {path}...")
     properties = convert_gso_asset(path, target_dir)
     details_list.append(properties)
 
@@ -213,7 +213,8 @@ def convert_all_gso_assets_from_dir(download_dir: Path, target_dir: Path):
 
 def main(download_dir: Path = Path("../Assets/GSO_raw"), target_dir: Path = Path("../Assets/GSO"),
          keep_raw_assets=False):
-  download_gso_assets(download_dir)
+  #download_gso_assets(download_dir)
+  print('done downloading')
   target_dir.mkdir(parents=True, exist_ok=True)
   convert_all_gso_assets_from_dir(download_dir, target_dir)
   logging.info("Done!")
@@ -223,10 +224,10 @@ def main(download_dir: Path = Path("../Assets/GSO_raw"), target_dir: Path = Path
 
 
 if __name__ == '__main__':
-  parser = argparse.Parser()
+  parser = argparse.ArgumentParser()
   parser.add_argument("--download_dir", type=str, default="Assets/GSO_raw")
   parser.add_argument("--target_dir", type=str, default="Assets/GSO")
   parser.add_argument("--keep_raw_assets", type=bool, default=False)
   FLAGS, unused = parser.parse_known_args()
-  main(download_dir=FLAGS.download_dir, target_dir=FLAGS.target_dir,
+  main(download_dir=Path(FLAGS.download_dir), target_dir=Path(FLAGS.target_dir),
        keep_raw_assets=FLAGS.keep_raw_assets)
