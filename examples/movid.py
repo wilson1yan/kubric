@@ -335,6 +335,8 @@ if FLAGS.save_state:
 
 logging.info("Rendering the scene ...")
 data_stack = renderer.render()
+data_stack = dict(rgba=data_stack['rgba'],
+                  segmentation=data_stack['segmentation'])
 
 # --- Postprocessing
 kb.compute_visibility(data_stack["segmentation"], scene.assets)
