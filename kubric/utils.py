@@ -71,9 +71,9 @@ class ArgumentParser(argparse.ArgumentParser):
     self.add_argument("--logging_level", type=str, default="INFO")
     self.add_argument("--seed", type=int, default=None,
                       help="(int) seed for random sampling in the worker (default: None)")
-    self.add_argument("--width", type=int, default=512,
+    self.add_argument("--width", type=int, default=64,
                       help="width of the output image/video in pixels (default: 512)")
-    self.add_argument("--height", type=int, default=512,
+    self.add_argument("--height", type=int, default=64,
                       help="height of the output image/video in pixels (default: 512)")
     self.add_argument("--scratch_dir", type=str, default=tempfile.mkdtemp(),
                       help="local directory for storing intermediate files such as "

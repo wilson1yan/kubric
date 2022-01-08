@@ -197,31 +197,31 @@ def get_render_layers_from_exr(filename) -> Dict[str, np.ndarray]:
     # Image is in RGBA format with range [0, inf]
     # TODO: image is in HDR, so we need some tone-mapping
     output["rgba"] = read_channels_from_exr(exr, ["Image.R", "Image.G", "Image.B", "Image.A"])
-  if "Depth" in layer_names:
-    # range [0, 10000000000.0]  # the value 1e10 is used for background / infinity
-    # TODO: clip to a reasonable value. Is measured in meters so usual range is ~ [0, 10]
-    output["depth"] = read_channels_from_exr(exr, ["Depth.V"])
-  if "Vector" in layer_names:
-    flow = read_channels_from_exr(exr, ["Vector.R", "Vector.G", "Vector.B", "Vector.A"])
-    # Blender exports forward and backward flow in a single image,
-    # and uses (-delta_col, delta_row) format, but we prefer (delta_row, delta_col)
-    # also use normalized coords that range from (0, 0) at the top left to (1, 1) at bottom right
-    output["backward_flow"] = np.zeros_like(flow[..., :2])
-    output["backward_flow"][..., 0] = flow[..., 1] / flow.shape[-3]
-    output["backward_flow"][..., 1] = -flow[..., 0] / flow.shape[-2]
+  # if "Depth" in layer_names:
+  #   # range [0, 10000000000.0]  # the value 1e10 is used for background / infinity
+  #   # TODO: clip to a reasonable value. Is measured in meters so usual range is ~ [0, 10]
+  #   output["depth"] = read_channels_from_exr(exr, ["Depth.V"])
+  # if "Vector" in layer_names:
+  #   flow = read_channels_from_exr(exr, ["Vector.R", "Vector.G", "Vector.B", "Vector.A"])
+  #   # Blender exports forward and backward flow in a single image,
+  #   # and uses (-delta_col, delta_row) format, but we prefer (delta_row, delta_col)
+  #   # also use normalized coords that range from (0, 0) at the top left to (1, 1) at bottom right
+  #   output["backward_flow"] = np.zeros_like(flow[..., :2])
+  #   output["backward_flow"][..., 0] = flow[..., 1] / flow.shape[-3]
+  #   output["backward_flow"][..., 1] = -flow[..., 0] / flow.shape[-2]
 
-    output["forward_flow"] = np.zeros_like(flow[..., 2:])
-    output["forward_flow"][..., 0] = flow[..., 3] / flow.shape[-3]
-    output["forward_flow"][..., 1] = -flow[..., 2] / flow.shape[-2]
+  #   output["forward_flow"] = np.zeros_like(flow[..., 2:])
+  #   output["forward_flow"][..., 0] = flow[..., 3] / flow.shape[-3]
+  #   output["forward_flow"][..., 1] = -flow[..., 2] / flow.shape[-2]
 
-  if "Normal" in layer_names:
-    # range: [-1, 1]
-    data = read_channels_from_exr(exr, ["Normal.X", "Normal.Y", "Normal.Z"])
-    output["normal"] = ((data + 1) * 65535 / 2).astype(np.uint16)
-  if "UV" in layer_names:
-    # range [0, 1]
-    data = read_channels_from_exr(exr, ["UV.X", "UV.Y", "UV.Z"])
-    output["uv"] = (data * 65535).astype(np.uint16)
+  # if "Normal" in layer_names:
+  #   # range: [-1, 1]
+  #   data = read_channels_from_exr(exr, ["Normal.X", "Normal.Y", "Normal.Z"])
+  #   output["normal"] = ((data + 1) * 65535 / 2).astype(np.uint16)
+  # if "UV" in layer_names:
+  #   # range [0, 1]
+  #   data = read_channels_from_exr(exr, ["UV.X", "UV.Y", "UV.Z"])
+  #   output["uv"] = (data * 65535).astype(np.uint16)
   if "CryptoObject00" in layer_names:
     # CryptoMatte stores the segmentation of Objects using two kinds of channels:
     #  - index channels (uint32) specify the object index for a pixel
@@ -239,8 +239,8 @@ def get_render_layers_from_exr(filename) -> Dict[str, np.ndarray]:
     alpha_channels = [n + "." + c for n in crypto_layers for c in "GA"]
     alphas = read_channels_from_exr(exr, alpha_channels)
     output["segmentation_alphas"] = alphas
-  if "ObjectCoordinates" in layer_names:
-    output["object_coordinates"] = read_channels_from_exr(exr, ["ObjectCoordinates.R", "ObjectCoordinates.G", "ObjectCoordinates.B"])
+  # if "ObjectCoordinates" in layer_names:
+  #   output["object_coordinates"] = read_channels_from_exr(exr, ["ObjectCoordinates.R", "ObjectCoordinates.G", "ObjectCoordinates.B"])
   return output
 
 

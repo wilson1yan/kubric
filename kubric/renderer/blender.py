@@ -273,8 +273,9 @@ class Blender(core.View):
       png_filename = from_dir / "images" / (exr_filename.stem + ".png")
 
       layers = blender_utils.get_render_layers_from_exr(exr_filename)
-      data = {k: layers[k] for k in
-              ["backward_flow", "forward_flow", "depth", "uv", "normal", "object_coordinates"]}
+      data = dict()
+      # data = {k: layers[k] for k in
+      #         ["backward_flow", "forward_flow", "depth", "uv", "normal", "object_coordinates"]}
       # Use the contrast-normalized PNG instead of the EXR for RGBA.
       data["rgba"] = file_io.read_png(png_filename)
       data["segmentation"] = layers["segmentation_indices"][:, :, :1]
@@ -291,7 +292,7 @@ class Blender(core.View):
         data_stack["segmentation"], self.scene.assets)
 
     # convert z values (distance to camera plane) into depth (distance to camera center)
-    data_stack["depth"] = self.scene.camera.z_to_depth(data_stack["depth"])
+    # data_stack["depth"] = self.scene.camera.z_to_depth(data_stack["depth"])
     return data_stack
 
   @staticmethod

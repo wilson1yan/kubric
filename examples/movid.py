@@ -107,15 +107,15 @@ CAMERA_RANGE = [[-10, -10, 1], [10, 10, 3]]
 # --- CLI arguments
 parser = kb.ArgumentParser()
 # Configuration for the objects of the scene
-parser.add_argument("--objects_set", choices=["clevr", "kubasic", "gso"], default="clevr")
+parser.add_argument("--objects_set", choices=["clevr", "kubasic", "gso"], default="kubasic")
 parser.add_argument("--objects_split", choices=["train", "test"], default="train")
-parser.add_argument("--min_num_static_objects", type=int, default=10,
+parser.add_argument("--min_num_static_objects", type=int, default=0,
                     help="minimum number of static (distractor) objects")
-parser.add_argument("--max_num_static_objects", type=int, default=20,
+parser.add_argument("--max_num_static_objects", type=int, default=0,
                     help="maximum number of static (distractor) objects")
-parser.add_argument("--min_num_dynamic_objects", type=int, default=1,
+parser.add_argument("--min_num_dynamic_objects", type=int, default=3,
                     help="minimum number of dynamic (tossed) objects")
-parser.add_argument("--max_num_dynamic_objects", type=int, default=3,
+parser.add_argument("--max_num_dynamic_objects", type=int, default=10,
                     help="maximum number of static (distractor) objects")
 parser.add_argument("--object_friction", type=float, default=None)
 parser.add_argument("--object_restitution", type=float, default=None)
@@ -127,17 +127,17 @@ parser.add_argument("--background", choices=["clevr", "colored", "hdri"], defaul
 parser.add_argument("--backgrounds_split", choices=["train", "test"], default="train")
 
 # Configuration for the camera
-parser.add_argument("--camera", choices=["clevr", "katr", "random", "linear_movement"], default="clevr")
+parser.add_argument("--camera", choices=["clevr", "katr", "random", "linear_movement"], default="random")
 parser.add_argument("--max_camera_movement", type=float, default=4.0)
 
 # Configuration for the source of the assets
-parser.add_argument("--kubasic_assets_dir", type=str, default="gs://kubric-public/KuBasic")
-parser.add_argument("--gso_assets_dir", type=str, default="gs://kubric-public/GSO")
+parser.add_argument("--kubasic_assets_dir", type=str, default="examples/KuBasic")
+parser.add_argument("--gso_assets_dir", type=str, default="examples/GSO")
 parser.add_argument("--hdri_dir", type=str, default="gs://kubric-public/hdri_haven/4k")
 
 parser.add_argument("--no_save_state", dest="save_state", action="store_false")
 parser.add_argument("--save_state", dest="save_state", action="store_true")
-parser.set_defaults(save_state=True, frame_end=24, frame_rate=12, width=512, height=512)
+parser.set_defaults(save_state=False, frame_end=24, frame_rate=12, width=64, height=64)
 FLAGS = parser.parse_args()
 
 # --- Common setups & resources
