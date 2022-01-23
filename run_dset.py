@@ -3,11 +3,13 @@ import os.path as osp
 import argparse
 import multiprocessing as mp
 
-DATASET = 'MOVi-v1'
+DATASET = 'MOVi'
+RESOLUTION = 64
+OBJECTS = 'kubasic'
 
 def generate_episode(i):
     output_dir = osp.join('datasets', DATASET, f'episode_{i}')
-    cmd = f'python examples/movid.py --job-dir {output_dir}' 
+    cmd = f'python examples/movid.py --job-dir {output_dir} --height {RESOLUTION} --width {RESOLUTION} --objects_set {OBJECTS}' 
     os.system(cmd)
 
 if __name__ == '__main__':
